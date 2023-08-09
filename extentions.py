@@ -5,9 +5,9 @@ from config import keys
 class APIExeption(Exception):
     pass
 
-class get_price:
+class СurrensyConverter:
     @staticmethod
-    def convert(quote: str, base: str, amount: str):
+    def get_price(quote: str, base: str, amount: str):
         if quote == base:
             raise APIExeption(f'Невозможно перевести одинаковые валюты {base}.')
 
@@ -27,6 +27,6 @@ class get_price:
             raise APIExeption(f'Не удалось обработать количество {amount}.')
 
         r = requests.get(f'https://min-api.cryptocompare.com/data/price?fsym={quote_ticker}&tsyms={base_ticker}')
-        total_base = json.loads(r.content)[keys[base]] * amount
+        total_base = float(json.loads(r.content)[keys[base]] * amount)
 
         return total_base

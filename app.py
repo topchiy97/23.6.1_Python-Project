@@ -1,6 +1,6 @@
 import telebot
 from config import keys, TOKEN
-from extentions import APIExeption, get_price
+from extentions import APIExeption, СurrensyConverter
 
 bot = telebot.TeleBot(TOKEN)
 
@@ -8,7 +8,7 @@ bot = telebot.TeleBot(TOKEN)
 def instruction(message: telebot.types.Message):
     text = 'Чтобы начать работу, введите команду в следующем формате:\n<имя валюты, цену которой необходимо узнать> \
 <имя валюты, в которой надо узнать цену первой валюты> \
-<количество первой валюты>\nУвидеть список всех доступных валют: /values'
+<количество первой валюты. При введении дробного количества используйте точку>\nУвидеть список всех доступных валют: /values'
     bot.reply_to(message, text)
 
 @bot.message_handler(commands=['values'])
@@ -26,13 +26,13 @@ def conv_value(message: telebot.types.Message):
             raise APIExeption('Количество введенных параметров должно быть равно 3')
 
         quote, base, amount = values
-        total_base = get_price.convert(quote, base, amount)
+        total_base = СurrensyConverter.get_price(quote, base, amount)
     except APIExeption as e:
         bot.reply_to(message, f'Ошибка пользователя\n{e}')
     except Exception as e:
         bot.reply_to(message, f'Не удалось обработать команду\n{e}')
     else:
-        text = f'Цена {amount} {quote} в {base} - {total_base}'
+        text = f'Цена {amount} {quote} в {base} - {total_base} {base}'
         bot.send_message(message.chat.id, text)
 
 
