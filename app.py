@@ -19,7 +19,7 @@ def value_list(message: telebot.types.Message):
     bot.reply_to(message, text)
 
 @bot.message_handler(content_types=['text', ])
-def conv_value(message: telebot.types.Message):
+def get_price(message: telebot.types.Message):
     values = message.text.split(' ')
     try:
         if len(values) != 3:
