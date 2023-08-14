@@ -23,6 +23,8 @@ class СurrensyConverter:
 
         try:
             amount = float(amount)
+            if amount <=0:
+                raise APIExeption(f'Невозможно обработать отрицательное или нулевое количество валюты {quote}.')
         except ValueError:
             raise APIExeption(f'Не удалось обработать количество {amount}.')
 
